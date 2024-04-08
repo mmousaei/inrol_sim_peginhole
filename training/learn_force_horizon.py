@@ -109,7 +109,7 @@ def main():
     # Training setup
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
     criterion = nn.MSELoss()
-    epochs = 200
+    epochs = 500
     
     train_losses = []
     val_losses = []
@@ -137,6 +137,11 @@ def main():
         val_loss /= len(val_loader)
         val_losses.append(val_loss)
         print(f'Epoch {epoch+1}/{epochs}, Training Loss: {train_loss}, Validation Loss: {val_loss}')
+        # Save the model every 100 epochs
+        if (epoch + 1) % 100 == 0:
+            checkpoint_path = f"model_epoch_{epoch+1}.pth"
+            torch.save(model.state_dict(), checkpoint_path)
+            print(f"Model saved to {checkpoint_path} at epoch {epoch+1}")
     
     # Plotting training and validation loss
     plt.figure(figsize=(10, 5))
